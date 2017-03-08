@@ -1,4 +1,4 @@
-# Mobile Client Application to Web Server Interface
+# Web Application to Web Server Interface
 All objects will be represented in JSON format unless otherwise noted.
 `Optional<>` implies that the field is not guaranteed to be included in the object returned from the web server or is not required for an overloaded function.
 REST API calls are all to be executed in the context of the currently authenticated user when a `Token` is required.
