@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -39,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/email_field"
         android:layout_centerHorizontal="true"
-        android:id="@+id/submit_button" />
+        android:id="@+id/login_button" />
 
     <TextView
         android:text="Create an account"
@@ -59,4 +60,16 @@
         android:layout_centerHorizontal="true"
         android:textSize="30sp"
         android:paddingBottom="20dp" />
+
+    <TextView
+        android:text="Existing user? Login here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/to_loginpage"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/login_button"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:onClick="callLoginView" />
+
 </RelativeLayout>

@@ -6,5 +6,5 @@ package edu.gatech.seclass.partyplaylist;
 
 public class Api {
     public static String REGISTER_ENDPOINT = "https://www.google.com";
-    public static String LOGIN_ENDPOINT = "";
+    public static String LOGIN_ENDPOINT = "https://www.google.com";
 }

@@ -1,5 +1,6 @@
 package edu.gatech.seclass.partyplaylist;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,13 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -29,6 +29,7 @@ public class Register extends AppCompatActivity {
     private EditText passwordField;
     private EditText emailField;
     private Button submitButton;
+    private TextView loginPageLink;
     private enum RequestStatus {
         SUCCESS, ERROR_MISSING_FIELD, ERROR_SERVER_CONNECTION
     }
@@ -42,7 +43,8 @@ public class Register extends AppCompatActivity {
         usernameField = (EditText) findViewById(R.id.username_field);
         passwordField = (EditText) findViewById(R.id.password_field);
         emailField = (EditText) findViewById(R.id.email_field);
-        submitButton = (Button) findViewById(R.id.submit_button);
+        submitButton = (Button) findViewById(R.id.login_button);
+        loginPageLink = (TextView) findViewById(R.id.to_loginpage);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +60,11 @@ public class Register extends AppCompatActivity {
         });
     }
 
+    public void callLoginView(View view)
+    {
+        Intent i = new Intent(getApplicationContext(),Login.class);
+        startActivity(i);
+    }
     private class RegisterRequest extends AsyncTask<String, Void, RequestStatus> {
         @Override
         protected void onPreExecute() {
@@ -67,10 +74,14 @@ public class Register extends AppCompatActivity {
         @Override
         protected RequestStatus doInBackground(String... params) {
             // Runs on the background thread
-            if (params.length != 3) {
-                // 3 fields to fill in
-                return RequestStatus.ERROR_MISSING_FIELD;
+            for (int i=0;i<params.length;i++)
+            {
+                if(params[i] == null || params[i].length() == 0)
+                {
+                    return RequestStatus.ERROR_MISSING_FIELD;
+                }
             }
+
             Log.d(LOG_TAG, "Sending a server request to create an account with username "
                     + params[0] + ", password " + params[1] + ", email " + params[2]);
 
@@ -121,8 +132,7 @@ public class Register extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     break;
                 case ERROR_MISSING_FIELD:
-                    Toast.makeText(getApplicationContext(), SystemMessages.FORM_ERROR +
-                            "filled in",
+                    Toast.makeText(getApplicationContext(), SystemMessages.FORM_ERROR ,
                             Toast.LENGTH_SHORT).show();
                     break;
                 case ERROR_SERVER_CONNECTION:

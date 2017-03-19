@@ -43,10 +43,11 @@
         android:paddingBottom="20dp" />
 
     <Button
-        android:text="Register"
+        android:text="Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/submit_button"
+        android:id="@+id/login_button"
         android:layout_below="@+id/password_field"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="loginUser" />
 </RelativeLayout>
