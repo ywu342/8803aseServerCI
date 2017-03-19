@@ -24,12 +24,14 @@ import java.net.URLEncoder;
 
 public class Register extends AppCompatActivity {
     private final String LOG_TAG = "PartyPlaylist.Register";
-    private final String REGISTER_ENDPOINT = "https://www.google.com";
-
+    private final String REGISTER_ENDPOINT = Api.REGISTER_ENDPOINT;
     private EditText usernameField;
     private EditText passwordField;
     private EditText emailField;
     private Button submitButton;
+    private enum RequestStatus {
+        SUCCESS, ERROR_MISSING_FIELD, ERROR_SERVER_CONNECTION
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,23 +117,21 @@ public class Register extends AppCompatActivity {
             // Runs on the UI thread
             switch (result) {
                 case SUCCESS:
-                    Toast.makeText(getApplicationContext(), "Account was registered successfully",
+                    Toast.makeText(getApplicationContext(), SystemMessages.REGISTRATION_SUCCESS,
                             Toast.LENGTH_SHORT).show();
                     break;
                 case ERROR_MISSING_FIELD:
-                    Toast.makeText(getApplicationContext(), "Please make sure all fields are " +
+                    Toast.makeText(getApplicationContext(), SystemMessages.FORM_ERROR +
                             "filled in",
                             Toast.LENGTH_SHORT).show();
                     break;
                 case ERROR_SERVER_CONNECTION:
-                    Toast.makeText(getApplicationContext(), "Server failed, try again",
+                    Toast.makeText(getApplicationContext(), SystemMessages.SERVER_ERROR,
                             Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     }
 
-    private enum RequestStatus {
-        SUCCESS, ERROR_MISSING_FIELD, ERROR_SERVER_CONNECTION
-    }
+
 }
