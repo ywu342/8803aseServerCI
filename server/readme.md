@@ -1,6 +1,15 @@
-The link to the server code base is :
-https://github.gatech.edu/gt-se-2017spring/8803ASESpring17Team3/tree/master/server
+# Server
+Implemented as a Maven Java project using Jersey RESTful Web Services framework. The server used during development is Tomcat v8.0. Please import the server directory as a Maven project in Eclipse. Then you can run the app on top of a selected server.
 
-As the .gitignore file is not allowing us to add .xml we could not add our project in this common repo.
-We have added it in our team repo instead.
-
+## APIs:
+- User Registration (POST):
+  * url: http://localhost:8080/server/users/register
+  * JSON input: 
+{
+ "id":"1",
+ "name":"Yaling",
+ "password":"correct",
+ "email":"yaling@gatech.edu"
+}
+  * Response: 200 ok
+- User Authentication ()
