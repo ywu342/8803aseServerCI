@@ -5,12 +5,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User {
 	
-	private String name, userid, password, email;
+	private String name, id, password, email;
 	
 	public User() {}
 	
-	public User(String userid, String password, String name, String email){
-		this.userid=userid;
+	public User(String id, String password, String name, String email){
+		this.id=id;
 		this.email=email;
 		this.name=name;
 		this.password=password;		
@@ -23,10 +23,10 @@ public class User {
 	        this.name = name;
 	}
     public String getId() {
-        return userid;
+        return id;
 	}
-	public void setId(String userid) {
-	        this.userid = userid;
+	public void setId(String id) {
+	        this.id = id;
 	}
     public String getPassword() {
         return password;

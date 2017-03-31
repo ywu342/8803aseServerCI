@@ -14,12 +14,16 @@ import javax.ws.rs.core.Response;
 
 import org.cs8803.server.models.Playlist;
 import org.cs8803.server.models.User;
+import org.cs8803.server.services.NetClient;
+import org.cs8803.server.services.UserAuth;
 
 
 @Path("/users")
 public class UserAPI {
 
 	User user = new User();
+	UserAuth userAuth = new UserAuth();
+	NetClient netClient = new NetClient();
 	
 	  // This method is called if TEXT_PLAIN is request
 	  @GET
@@ -28,7 +32,7 @@ public class UserAPI {
 	    return "Hello It's users.";
 	  }
 	  
-	  
+	 
 	  @Path("/{userid}")
 	  @GET
 	  @Produces("application/json")
@@ -36,15 +40,25 @@ public class UserAPI {
 		  //Get the user with a particular user id (restricted access)
 		  User u = new User();
 		  u.setId(id);
+		  u.setName("Yaling");
+		  u.setPassword("true");
+		  u.setEmail("email");
 		  return u;
 	  }
 	  
+	  // FOR REGISTRATION
+	  @Path("/register")
 	  @POST
 	  @Consumes(MediaType.APPLICATION_JSON)
 	  @Produces(MediaType.APPLICATION_JSON)
 	  public Response addUser(User user){
 		  //Create a new user
 		  //return Response.ok().build();
+//		  Gson gson = new Gson();
+//		  String jsonString = gson.toJson(user);
+//		  JsonObject request = new JsonObject(jsonString);
+//		  netClient.makePostCall("http://localhost:8888/userregistration", object);
+		  userAuth.storeTokens(user);
 		  return Response.status(200).entity("ok").build();
 	  }
 	  
