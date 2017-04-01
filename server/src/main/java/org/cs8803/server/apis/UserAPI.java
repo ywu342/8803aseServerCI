@@ -26,7 +26,7 @@ public class UserAPI {
 
 	User user = new User();
 	UserAuth userAuth = new UserAuth();
-	NetClient netClient = new NetClient();
+	HttpURLConnectionExample httpob = new HttpURLConnectionExample();
 	
 	  // This method is called if TEXT_PLAIN is request
 	  @GET
@@ -53,7 +53,7 @@ public class UserAPI {
 	  @Path("/register")
 	  @POST
 	  @Consumes(MediaType.APPLICATION_JSON)
-//	  @Produces(MediaType.APPLICATION_JSON)
+	  @Produces(MediaType.APPLICATION_JSON)
 	  public Response addUser(User user){
 
 		  Gson gson = new Gson();
@@ -67,11 +67,19 @@ public class UserAPI {
 		  System.out.println("---------------------------------------output-----------------");
 		  //String output = netClient.makePostCall("http://1-dot-thinking-return-161419.appspot.com/userregistration",userstring);
 		  
-		  HttpURLConnectionExample httpob = new HttpURLConnectionExample();
+
 		  String output="";
 		  try{
 			  
 			  output = httpob.sendPost("https://1-dot-thinking-return-161419.appspot.com/userregistration", userstring);
+			  if(output.equals("Your account has been created."))
+			  {
+				  String token = userAuth.storeTokens(user);
+				  String jsonToken = "{\"token\":\"" + token +"\"}";
+				  System.out.println("Madhu");
+				  return Response.status(201).entity(jsonToken).build();
+				  
+			  }
 		  }
 		  catch(Exception e)
 		  {
@@ -80,8 +88,48 @@ public class UserAPI {
 		  
 		  
 		  System.out.println("Output : "+output);
-		  return Response.status(200).entity("ok").build();
+		  //Depends on what the backend returns
+		  return Response.status(200).entity(output).build();
 	  }
+	  
+	  //LOGIN
+	  @Path("/login")
+	  @POST
+	  @Consumes(MediaType.APPLICATION_JSON)
+	  @Produces(MediaType.APPLICATION_JSON)
+	  public Response loginUser(User user){
+	  
+		  String urlParameters = "name=Ricket&email=anuanu79wwee39@gmail.com&password=bbt312rr33";
+		  
+		  //System.out.println(userstring);
+		  //userAuth.storeTokens(user);
+		  System.out.println("---------------------------------------login-----------------");
+		  //String output = netClient.makePostCall("http://1-dot-thinking-return-161419.appspot.com/userregistration",userstring);
+		  
+
+		  String output="";
+		  try{
+			  
+			  output = httpob.sendGet("https://1-dot-thinking-return-161419.appspot.com/userregistration?"+urlParameters);
+			  if(output.startsWith("User Found"))
+			  {
+				  String token = userAuth.storeTokens(user);
+				  String jsonToken = "{\"token\":\"" + token +"\"}";
+				  return Response.status(201).entity(jsonToken).build();			  
+			  }
+			  
+		  }
+		  catch(Exception e)
+		  {
+			  System.out.println(e);
+		  }
+		  
+		  
+		  System.out.println("Output hi: "+output);
+		  //Depends on what the backend returns  
+		  return Response.status(200).entity(output).build();
+	  }
+	  
 	  
 	  
 	  @Path("/{userid}/member/playlist")

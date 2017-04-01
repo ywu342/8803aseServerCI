@@ -20,9 +20,10 @@ public class UserAuth {
 		return new String(encodedBytes);
 	}
 	
-	public void storeTokens(User user) {
+	public String storeTokens(User user) {
 		String token = encodeString(user);
 		activeUsers.put(user.getId(), token);
+		return token;
 	}
 	
 	public boolean verifyToken(String userid, String token){
