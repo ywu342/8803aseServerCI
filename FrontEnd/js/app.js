@@ -37,41 +37,63 @@ function get(route, params, $http, callback) {
         });
 }
 
+/** Utilitis for form verification **/
+function checkEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+function checkEmpty(str) {
+    return str.length > 0;
+}
+
+function checkPassword(pwd, cpwd) {
+    return pwd.length > 4 && pwd == cpwd;
+}
 
 /** The app starts here **/
 var app = angular.module('PartyList', [])
     .controller('LoginRegisterCtrl', function($scope, $http) {
-        $scope.LoginObject = {}
+        /** Initializing Login/ Register Objects **/
+        $scope.LoginObject = {};
+        $scope.RegisterObject = {};
 
         /** Login function **/
-        $scope.login = function(){
-            params = {username: LoginObject.username, password: LoginObject.password};
-            post('login', params, $http, function(data){
-                if(data.success)
-                    window.location.replace('./dashboard');
-                else
-                    alert('Login unsuccessful, please enter valid credentials!');
-            });
+        $scope.login = function() {
+            uname = $scope.LoginObject.username;
+            pwd = $scope.LoginObject.password;
+            if (!checkEmpty(uname) || !checkEmpty(pwd))
+                alert('Incorrect login information.');
+            else {
+                params = { username: uname, password: pwd };
+                post('accounts/login', params, $http, function(data) {
+                    if (data.success)
+                        window.location.replace('./dashboard');
+                    else
+                        alert('Login unsuccessful, please enter valid credentials!');
+                });
+            }
         }
 
         /** Register function **/
-        $scope.register = function(){
-            uname = RegisterObject.username;
-            pwd = RegisterObject.password;
-            cpwd = RegisterObject.confirm_password;
-            name = RegisterObject.name;
-            uemail = RegisterObject.email;
+        $scope.register = function() {
+            uname = $scope.RegisterObject.username;
+            pwd = $scope.RegisterObject.password;
+            cpwd = $scope.RegisterObject.confirm_password;
+            uemail = $scope.RegisterObject.email;
 
-            if(!checkEmail(uemail) || !checkUsername(uname) || 
-                !checkPassword(pwd, cpwd) || !checkName(name))
+            if (!checkEmail(uemail) || !checkEmpty(uname) ||
+                !checkPassword(pwd, cpwd))
                 alert('Incorrect user information.');
-            params = {name: name, username: uname, password: pwd, emai: uemail};
-             post('register', params, $http, function(data){
-                if(data.success)
-                    window.location.replace('./dashboard');
-                else
-                    alert('Registration unsuccessful, please enter valid credentials!');
-            });
+            else {
+                params = { username: uname, password: pwd, emai: uemail };
+                post('accounts/create', params, $http, function(data) {
+                    if (data.success)
+                        window.location.replace('./dashboard');
+                    else
+                        alert('Registration unsuccessful, please enter valid credentials!');
+                });
+            }
         }
     })
     .directive('ngEnter', function() {

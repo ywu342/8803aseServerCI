@@ -7,14 +7,15 @@
 </head>
 
 <body ng-app="PartyList">
+
     <div class="login-box" ng-controller="LoginRegisterCtrl">
+        <div id="login-form">
         <h2>LOGIN FORM</h2>
-        <form id="loginform" action="post" method="">
             <table>
                 <tr>
                     <td>Username</td>
                     <td>
-                        <input type="text" ng-model="LoginObject.name" />
+                        <input type="text" ng-model="LoginObject.username" />
                     </td>
                 </tr>
                 <tr>
@@ -30,22 +31,29 @@
                     </td>
                 </tr>
             </table>
-        </form>
+        </div>
     </div>
-    <div class="register-box">
+
+    <div class="register-box" ng-controller="LoginRegisterCtrl">
+        <div id="registeration-form">
         <h2>REGISTERING FORM</h2>
-        <form id="registerationform" action="post" method="">
             <table>
                 <tr>
-                    <td>Name</td>
+                    <td>Username</td>
                     <td>
-                        <input type="text" ng-model="RegisterObject.name"/>
+                        <input type="text" ng-model="RegisterObject.username"/>
                     </td>
                 </tr>
                 <tr>
                     <td>Email</td>
                     <td>
                         <input type="text" ng-model="RegisterObject.email"/>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>Username</td>
+                    <td>
+                        <input type="text" ng-model="RegisterObject.username"/>
                     </td>
                 </tr>
                 <tr>
@@ -67,8 +75,12 @@
                     </td>
                 </tr>
             </table>
-        </form>
+        </div>
     </div>
+
+    <div class="clear"></div>
 </body>
+
 <script src="js/app.js"></script>
+
 </html>
