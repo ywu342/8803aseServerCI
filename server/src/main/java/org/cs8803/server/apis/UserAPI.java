@@ -14,8 +14,11 @@ import javax.ws.rs.core.Response;
 
 import org.cs8803.server.models.Playlist;
 import org.cs8803.server.models.User;
+import org.cs8803.server.services.HttpURLConnectionExample;
 import org.cs8803.server.services.NetClient;
 import org.cs8803.server.services.UserAuth;
+
+import com.google.gson.Gson;
 
 
 @Path("/users")
@@ -50,15 +53,33 @@ public class UserAPI {
 	  @Path("/register")
 	  @POST
 	  @Consumes(MediaType.APPLICATION_JSON)
-	  @Produces(MediaType.APPLICATION_JSON)
+//	  @Produces(MediaType.APPLICATION_JSON)
 	  public Response addUser(User user){
-		  //Create a new user
-		  //return Response.ok().build();
-//		  Gson gson = new Gson();
-//		  String jsonString = gson.toJson(user);
-//		  JsonObject request = new JsonObject(jsonString);
-//		  netClient.makePostCall("http://localhost:8888/userregistration", object);
-		  userAuth.storeTokens(user);
+
+		  Gson gson = new Gson();
+		  String userstring = gson.toJson(user);
+
+		  
+		  //String userstring = user.toJsonString();
+		  
+		  System.out.println(userstring);
+		  //userAuth.storeTokens(user);
+		  System.out.println("---------------------------------------output-----------------");
+		  //String output = netClient.makePostCall("http://1-dot-thinking-return-161419.appspot.com/userregistration",userstring);
+		  
+		  HttpURLConnectionExample httpob = new HttpURLConnectionExample();
+		  String output="";
+		  try{
+			  
+			  output = httpob.sendPost("https://1-dot-thinking-return-161419.appspot.com/userregistration", userstring);
+		  }
+		  catch(Exception e)
+		  {
+			  System.out.println(e);
+		  }
+		  
+		  
+		  System.out.println("Output : "+output);
 		  return Response.status(200).entity("ok").build();
 	  }
 	  

@@ -40,4 +40,10 @@ public class User {
 	public void setEmail(String email) {
 	        this.email = email;
 	}
+	public String toJsonString(){
+		return "{\"id\":\""+this.getId()+"\","
+				+"\"email\":\""+this.getEmail()+"\","
+				+"\"name\":\""+this.getName()+"\","
+				+"\"password\":\""+this.getPassword()+"\"}";
+	}
 }

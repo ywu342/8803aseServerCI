@@ -12,9 +12,9 @@ import javax.json.JsonObject;
 
 public class NetClient {
 
-	public String makePostCall(String urlString, JsonObject json) {
-
-		String output ="";
+	public String makePostCall(String urlString,String userstring) {
+		
+	String output ="";
 		
 	  try {
 
@@ -24,7 +24,8 @@ public class NetClient {
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty("Content-Type", "application/json");
 
-		String input = json.toString();
+		//String input = json.toString();
+		String input = userstring;
 
 		OutputStream os = conn.getOutputStream();
 		os.write(input.getBytes());
@@ -55,7 +56,8 @@ public class NetClient {
 		e.printStackTrace();
 
 	 }
-	  return output;
+	 System.out.println(output);
+	 return output;
 
 	}
 	
