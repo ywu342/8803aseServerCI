@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import org.cs8803.server.models.Playlist;
 import org.cs8803.server.models.User;
 import org.cs8803.server.services.HttpURLConnectionExample;
-import org.cs8803.server.services.NetClient;
 import org.cs8803.server.services.UserAuth;
 
 import com.google.gson.Gson;
@@ -57,17 +56,7 @@ public class UserAPI {
 	  public Response addUser(User user){
 
 		  Gson gson = new Gson();
-		  String userstring = gson.toJson(user);
-
-		  
-		  //String userstring = user.toJsonString();
-		  
-		  System.out.println(userstring);
-		  //userAuth.storeTokens(user);
-		  System.out.println("---------------------------------------output-----------------");
-		  //String output = netClient.makePostCall("http://1-dot-thinking-return-161419.appspot.com/userregistration",userstring);
-		  
-
+		  String userstring = gson.toJson(user);  		  
 		  String output="";
 		  try{
 			  
@@ -76,7 +65,6 @@ public class UserAPI {
 			  {
 				  String token = userAuth.storeTokens(user);
 				  String jsonToken = "{\"token\":\"" + token +"\"}";
-				  System.out.println("Madhu");
 				  return Response.status(201).entity(jsonToken).build();
 				  
 			  }
@@ -86,8 +74,6 @@ public class UserAPI {
 			  System.out.println(e);
 		  }
 		  
-		  
-		  System.out.println("Output : "+output);
 		  //Depends on what the backend returns
 		  return Response.status(200).entity(output).build();
 	  }
@@ -99,14 +85,8 @@ public class UserAPI {
 	  @Produces(MediaType.APPLICATION_JSON)
 	  public Response loginUser(User user){
 	  
-		  String urlParameters = "name=Ricket&email=anuanu79wwee39@gmail.com&password=bbt312rr33";
+		  String urlParameters = "name="+user.getName()+"&email="+user.getEmail()+"&password="+user.getPassword();
 		  
-		  //System.out.println(userstring);
-		  //userAuth.storeTokens(user);
-		  System.out.println("---------------------------------------login-----------------");
-		  //String output = netClient.makePostCall("http://1-dot-thinking-return-161419.appspot.com/userregistration",userstring);
-		  
-
 		  String output="";
 		  try{
 			  
@@ -126,7 +106,7 @@ public class UserAPI {
 		  
 		  
 		  System.out.println("Output hi: "+output);
-		  //Depends on what the backend returns  
+		  //Depends on what the back end returns  
 		  return Response.status(200).entity(output).build();
 	  }
 	  
