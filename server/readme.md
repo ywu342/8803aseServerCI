@@ -3,13 +3,57 @@ Implemented as a Maven Java project using Jersey RESTful Web Services framework.
 
 ## APIs:
 - User Registration (POST):
-  * url: http://localhost:8080/server/users/register
-  * JSON input: 
-{
- "id":"1",
- "name":"Yaling",
- "password":"correct",
- "email":"yaling@gatech.edu"
-}
-  * Response: 200 ok
-- User Authentication ()
+  * URL: http://localhost:8080/server/users/register
+  * Input JSON: 
+  ~~~~ 
+  {
+     "name": "Ricket",
+     "email": "jiji@gmail.com",
+     "password": "bbt312rr33"
+  }
+~~~~
+  * Response:
+  
+  If succeed:
+  ~~~~
+  {
+     "token": token
+  }
+  ~~~~
+  If the user being created has an email that belongs to an existing user:
+  ~~~~
+  {
+     "code": 400,
+     "descrip": "User could not be created Successfully.User with email id already exists",
+     "smallUser": {
+         "name": "Ricket",
+         "email": "jiji@gmail.com",
+     "password": "bbt312rr33"
+     }
+  }
+  ~~~~
+
+- User Login (POST): 
+  * URL: http://localhost:8080/server/users/login
+  * Input JSON:
+  ~~~~
+  {
+     "name": "Ricket",
+     "email": "jiji@gmail.com",
+     "password": "bbt312rr33"
+  }
+  ~~~~
+  * Response:
+   If succeed:
+  ~~~~
+  {
+     "token": token
+  }
+  ~~~~
+  If the user is not found:
+  ~~~~
+  {
+     "code": 404,
+     "descrip": "User not found"
+  }
+  ~~~~
