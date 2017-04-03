@@ -1,5 +1,6 @@
 package edu.gatech.seclass.partyplaylist;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -31,6 +33,12 @@ public class Login extends AppCompatActivity {
         usernameField = (EditText) findViewById(R.id.username_field);
         passwordField = (EditText) findViewById(R.id.password_field);
 
+    }
+
+    public void callRegisterView(View view)
+    {
+        Intent i = new Intent(getApplicationContext(),Register.class);
+        startActivity(i);
     }
 
     public void loginUser(View view){
@@ -74,10 +82,10 @@ public class Login extends AppCompatActivity {
 
                 // TODO uncomment this when the server endpoint is finalized
                 // make request
-                // connection.setDoOutput(true);
-                // OutputStreamWriter writer  = new OutputStreamWriter(connection.getOutputStream());
-                // writer.write(data);
-                // writer.flush();
+                 connection.setDoOutput(true);
+                 OutputStreamWriter writer  = new OutputStreamWriter(connection.getOutputStream());
+                 writer.write(data);
+                 writer.flush();
 
                 // parse response
                 BufferedReader reader = new BufferedReader(
@@ -105,6 +113,8 @@ public class Login extends AppCompatActivity {
                 case SUCCESS:
                     Toast.makeText(getApplicationContext(), SystemMessages.LOGIN_SUCCESS,
                             Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(),UserHome.class);
+                    startActivity(i);
                     break;
                 case ERROR_MISSING_FIELD:
                     Toast.makeText(getApplicationContext(), SystemMessages.FORM_ERROR ,

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -98,11 +99,11 @@ public class Register extends AppCompatActivity {
                 URLConnection connection = registerEndpointUrl.openConnection();
 
                 // TODO uncomment this when the server endpoint is finalized
-                // make request
-                // connection.setDoOutput(true);
-                // OutputStreamWriter writer  = new OutputStreamWriter(connection.getOutputStream());
-                // writer.write(data);
-                // writer.flush();
+                 //make request
+                 connection.setDoOutput(true);
+                 OutputStreamWriter writer  = new OutputStreamWriter(connection.getOutputStream());
+                 writer.write(data);
+                 writer.flush();
 
                 // parse response
                 BufferedReader reader = new BufferedReader(
@@ -130,6 +131,8 @@ public class Register extends AppCompatActivity {
                 case SUCCESS:
                     Toast.makeText(getApplicationContext(), SystemMessages.REGISTRATION_SUCCESS,
                             Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(),UserHome.class);
+                    startActivity(i);
                     break;
                 case ERROR_MISSING_FIELD:
                     Toast.makeText(getApplicationContext(), SystemMessages.FORM_ERROR ,
