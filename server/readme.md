@@ -17,17 +17,7 @@ Implemented as a Maven Java project using Jersey RESTful Web Services framework.
   If succeed:
   ~~~~
   {
-     "code": 200,
-     "descrip": "User Created Successfully",
-     "smallUser": {
-     "key": {
-         "kind": "User",
-         "id": 6473924464345088
-      },
-     "name": "Ricket",
-     "email": "jiji@gmail.com",
-     "password": "bbt312rr33"
-     }
+     "token": token
   }
   ~~~~
   If the user being created has an email that belongs to an existing user:
@@ -54,10 +44,9 @@ Implemented as a Maven Java project using Jersey RESTful Web Services framework.
   }
   ~~~~
   * Response:
+   If succeed:
   ~~~~
-  If succeed:
   {
-     "code": 200,
      "token": token
   }
   ~~~~
