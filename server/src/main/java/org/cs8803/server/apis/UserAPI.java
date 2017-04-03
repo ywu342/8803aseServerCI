@@ -18,6 +18,9 @@ import org.cs8803.server.services.HttpURLConnectionExample;
 import org.cs8803.server.services.UserAuth;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 @Path("/users")
@@ -61,11 +64,22 @@ public class UserAPI {
 		  try{
 			  
 			  output = httpob.sendPost("https://1-dot-thinking-return-161419.appspot.com/userregistration", userstring);
-			  if(output.equals("Your account has been created."))
+
+			  JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
+			  //System.out.println("output 2: "+jsonObject.toString());
+			  System.out.println("code "+jsonObject.get("code"));
+			  
+			  if (jsonObject.get("code").getAsInt()==200)
 			  {
+//				  System.out.println("Entering");
 				  String token = userAuth.storeTokens(user);
+//				  JsonElement jsonElement = stringToJsonElement(token);
+				  
+				  //jsonObject.add("token", token);
 				  String jsonToken = "{\"token\":\"" + token +"\"}";
-				  return Response.status(201).entity(jsonToken).build();
+				  return Response.status(201).entity(jsonToken).header("Access-Control-Allow-Origin", "*")
+					      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+					      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
 				  
 			  }
 		  }
@@ -75,7 +89,9 @@ public class UserAPI {
 		  }
 		  
 		  //Depends on what the backend returns
-		  return Response.status(200).entity(output).build();
+		  return Response.status(200).entity(output).header("Access-Control-Allow-Origin", "*")
+			      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
 	  }
 	  
 	  //LOGIN
@@ -91,11 +107,14 @@ public class UserAPI {
 		  try{
 			  
 			  output = httpob.sendGet("https://1-dot-thinking-return-161419.appspot.com/userregistration?"+urlParameters);
-			  if(output.startsWith("User Found"))
+			  JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
+			  if(jsonObject.get("code").getAsInt()==200)
 			  {
 				  String token = userAuth.storeTokens(user);
 				  String jsonToken = "{\"token\":\"" + token +"\"}";
-				  return Response.status(201).entity(jsonToken).build();			  
+				  return Response.status(201).entity(jsonToken).header("Access-Control-Allow-Origin", "*")
+					      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+					      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();			  
 			  }
 			  
 		  }
@@ -107,7 +126,9 @@ public class UserAPI {
 		  
 		  System.out.println("Output hi: "+output);
 		  //Depends on what the back end returns  
-		  return Response.status(200).entity(output).build();
+		  return Response.status(200).header("Access-Control-Allow-Origin", "*")
+			      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
 	  }
 	  
 	  
