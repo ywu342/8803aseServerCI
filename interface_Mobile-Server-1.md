@@ -25,8 +25,8 @@ The `Account` object represents an account used by a user of the the party playl
 ### Account REST API
 |HTTP Method|URL                    |Input        |Output         |Description                                         |
 |-----------|-----------------------|-------------|---------------|----------------------------------------------------|
-| POST      |/api/accounts/create   |`AccountAuth`|`Account`      |Get the current user.                               |
-| POST      |/api/accounts/login    |`AccountAuth`|`Account`      |Get the user with the provided user ID.             |
+| POST      |/server/users/register   |`AccountAuth`|`Account`      |Get the current user.                               |
+| POST      |/server/users/login    |`AccountAuth`|`Account`      |Get the user with the provided user ID.             |
 
 
 

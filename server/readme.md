@@ -1,6 +1,59 @@
-The link to the server code base is :
-https://github.gatech.edu/gt-se-2017spring/8803ASESpring17Team3/tree/master/server
+# Server
+Implemented as a Maven Java project using Jersey RESTful Web Services framework. The server used during development is Tomcat v8.0. Please import the server directory as a Maven project in Eclipse. Then you can run the app on top of a selected server.
 
-As the .gitignore file is not allowing us to add .xml we could not add our project in this common repo.
-We have added it in our team repo instead.
+## APIs:
+- User Registration (POST):
+  * URL: http://localhost:8080/server/users/register
+  * Input JSON: 
+  ~~~~ 
+  {
+     "name": "Ricket",
+     "email": "jiji@gmail.com",
+     "password": "bbt312rr33"
+  }
+~~~~
+  * Response:
+  
+  If succeed:
+  ~~~~
+  {
+     "token": token
+  }
+  ~~~~
+  If the user being created has an email that belongs to an existing user:
+  ~~~~
+  {
+     "code": 400,
+     "descrip": "User could not be created Successfully.User with email id already exists",
+     "smallUser": {
+         "name": "Ricket",
+         "email": "jiji@gmail.com",
+     "password": "bbt312rr33"
+     }
+  }
+  ~~~~
 
+- User Login (POST): 
+  * URL: http://localhost:8080/server/users/login
+  * Input JSON:
+  ~~~~
+  {
+     "name": "Ricket",
+     "email": "jiji@gmail.com",
+     "password": "bbt312rr33"
+  }
+  ~~~~
+  * Response:
+   If succeed:
+  ~~~~
+  {
+     "token": token
+  }
+  ~~~~
+  If the user is not found:
+  ~~~~
+  {
+     "code": 404,
+     "descrip": "User not found"
+  }
+  ~~~~
