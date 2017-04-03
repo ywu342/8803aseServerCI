@@ -1,19 +1,13 @@
 /** Defining the endpoint **/
-var endpoint = "http://localhost:3000/";
+var endpoint = "http://143.215.113.196:8080/server/";
 
 /** Utility function to send data **/
 function post(route, data, $http, callback) {
     $http({
             method: 'POST',
             url: endpoint + route,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            transformRequest: function(obj) {
-                var str = [];
-                for (var p in obj)
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                return str.join("&");
-            },
-            data: data
+            headers: {'Content-Type': 'application/json'},
+            data: JSON.stringify(params)
         }).success(function(data, status, headers, config) {
             callback(data);
         })
@@ -60,13 +54,13 @@ var app = angular.module('PartyList', [])
 
         /** Login function **/
         $scope.login = function() {
-            uname = $scope.LoginObject.username;
+            email = $scope.LoginObject.email;
             pwd = $scope.LoginObject.password;
-            if (!checkEmpty(uname) || !checkEmpty(pwd))
+            if (!checkEmail(email) || !checkEmpty(pwd))
                 alert('Incorrect login information.');
             else {
-                params = { username: uname, password: pwd };
-                post('accounts/login', params, $http, function(data) {
+                params = { name: "", email: email, password: pwd };
+                post('users/login', params, $http, function(data) {
                     if (data.success)
                         window.location.replace('./dashboard');
                     else
@@ -77,17 +71,17 @@ var app = angular.module('PartyList', [])
 
         /** Register function **/
         $scope.register = function() {
-            uname = $scope.RegisterObject.username;
+            name = $scope.RegisterObject.name;
             pwd = $scope.RegisterObject.password;
             cpwd = $scope.RegisterObject.confirm_password;
             uemail = $scope.RegisterObject.email;
 
-            if (!checkEmail(uemail) || !checkEmpty(uname) ||
+            if (!checkEmail(uemail) || !checkEmpty(name) ||
                 !checkPassword(pwd, cpwd))
                 alert('Incorrect user information.');
             else {
-                params = { username: uname, password: pwd, emai: uemail };
-                post('accounts/create', params, $http, function(data) {
+                params = { name: name, password: pwd, emai: uemail };
+                post('users/register', params, $http, function(data) {
                     if (data.success)
                         window.location.replace('./dashboard');
                     else
