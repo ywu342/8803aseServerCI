@@ -16,11 +16,11 @@
 
 | HTTP Method | URL | Input | Output | Description |
 | --- | --- | --- | --- | --- |
-| GET | /api/users/{userid} |  | User Object | Get the user with a particular user id (restricted access)  |
-| POST | /api/users  | User name, password, email | User id | Create a new user |
-| PUT | /api/users/{userid} | User Object | User Object |  Update an existing user |
-| GET | /api/users/{userid}/member/playlist |  | List of Playlist objects |  Get a list of playlists associated with the user|
-| GET | /api/users/{userid}/owner/playlist |  | List of Playlist objects |  Get a list of playlists associated with the owner|
+| GET | /userregistration?email={email}&password={password} | | User Object | Get User Object (restricted access)|
+| POST | /userregistration  | User name, password, email | User id | Create a new user |
+| PUT | /userregistration/{userid} | User Object | User Object |  Update an existing user |
+| GET | /userregistration/{userid}/member/playlist |  | List of Playlist objects |  Get a list of playlists associated with the user|
+| GET | /userregistration/{userid}/owner/playlist |  | List of Playlist objects |  Get a list of playlists associated with the owner|
 
 # Songs 
 -------
