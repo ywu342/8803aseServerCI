@@ -51,7 +51,7 @@ Response:
 
 
 User Login: 
-URL: http://1-dot-thinking-return-161419.appspot.com/userregistration?name=Hannah&email=anuanu79ww39@gmail.com&password=bbt312
+URL: http://1-dot-thinking-return-161419.appspot.com/userregistration?email=anuanu79ww39@gmail.com&password=bbt312
 
 Response:
 
