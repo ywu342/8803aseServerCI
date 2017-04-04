@@ -4,31 +4,19 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-
-import static edu.gatech.seclass.partyplaylist.Api.LOGIN_ENDPOINT;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by andy on 3/18/17.
@@ -98,28 +86,30 @@ public class Register extends AppCompatActivity {
                     + params[0] + ", password " + params[1] + ", email " + params[2]);
 
             try {
-                String data = new JSONObject()
+                String urlParameters = new JSONObject()
                         .put("username", params[0])
                         .put("password", params[1])
                         .put("email", params[2]).toString();
 
-                URL registerEndpointUrl = new URL(LOGIN_ENDPOINT);
-                HttpURLConnection connection = (HttpURLConnection) registerEndpointUrl.openConnection();
+                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+                String request = REGISTER_ENDPOINT;
+                URL url;
+                url = new URL(request);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setInstanceFollowRedirects(false);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("charset", "utf-8");
+                conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                conn.setUseCaches(false);
+                try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
+                    wr.write(postData);
+                }
 
-                // TODO uncomment this when the server endpoint is finalized
-                //make request
-                connection.setDoOutput(true);
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 4.01; Windows NT)");
-                connection.setChunkedStreamingMode(0);
-
-                OutputStreamWriter writer  = new OutputStreamWriter(connection.getOutputStream());
-                writer.write(data);
-                writer.flush();
-
-                if (!(connection.getResponseCode()  == 200)) { // 2xx code means success
-                    InputStream _is = connection.getErrorStream();
+                if (!(conn.getResponseCode()/100  == 2)) { // 2xx code means success
+                    InputStream _is = conn.getErrorStream();
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(_is));
                     StringBuilder response = new StringBuilder();
@@ -127,34 +117,24 @@ public class Register extends AppCompatActivity {
                     while((line = reader.readLine()) != null) {
                         response.append(line + "\n");
                     }
-                    Log.i("Error != 2xx", response.toString());
+                    Log.d(LOG_TAG, "Non 2XX response\n" + response);
                     return RequestStatus.ERROR_SERVER_CONNECTION;
                 }
 
 
                 // parse response
                 BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
+                        new InputStreamReader(conn.getInputStream()));
                 StringBuilder response = new StringBuilder();
                 String line;
                 while((line = reader.readLine()) != null) {
                     response.append(line);
                 }
+                Log.d(LOG_TAG, "Server responded with " + response);
+                //Handle response
 
-
-                JSONObject jObject  = new JSONObject(response.toString()); // json
-                JSONObject jsonData = jObject.getJSONObject("data"); // get data object
-                Log.d(LOG_TAG, "Server responded with " + jsonData.toString());
-                //handle response
-
-
-            } catch (IOException e) {
+            }catch(Exception e){
                 e.printStackTrace();
-                return RequestStatus.ERROR_SERVER_CONNECTION;
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-                return RequestStatus.ERROR_SERVER_CONNECTION;
             }
             return RequestStatus.SUCCESS;
         }
