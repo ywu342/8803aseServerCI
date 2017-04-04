@@ -25,9 +25,9 @@ public class UserRegistrationServlet extends HttpServlet {
 		try {
 			email = req.getParameter("email");
 			password = req.getParameter("password");
-			name = req.getParameter("name");
+			//name = req.getParameter("name");
 			
-			User usr = DBUtilsUser.getUser(name, email, password);
+			User usr = DBUtilsUser.getUser(email, password);
 			if(usr==null)
 				throw new Exception();
 			userError.setSmallUser(usr);

@@ -5,6 +5,6 @@ package edu.gatech.seclass.partyplaylist;
  */
 
 public class Api {
-    public static String REGISTER_ENDPOINT = "https://www.google.com";
-    public static String LOGIN_ENDPOINT = "https://www.google.com";
+    public static String REGISTER_ENDPOINT = "http://35.187.194.28:8080/server/users/register/";
+    public static String LOGIN_ENDPOINT = "http://35.187.194.28:8080/server/users/login";
 }

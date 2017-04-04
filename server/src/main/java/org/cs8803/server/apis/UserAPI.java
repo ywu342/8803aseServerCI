@@ -77,7 +77,9 @@ public class UserAPI {
 				  
 				  //jsonObject.add("token", token);
 				  String jsonToken = "{\"token\":\"" + token +"\"}";
-				  return Response.status(201).entity(jsonToken).build();
+				  return Response.status(201).entity(jsonToken).header("Access-Control-Allow-Origin", "*")
+					      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+					      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
 				  
 			  }
 		  }
@@ -87,7 +89,9 @@ public class UserAPI {
 		  }
 		  
 		  //Depends on what the backend returns
-		  return Response.status(200).entity(output).build();
+		  return Response.status(200).entity(output).header("Access-Control-Allow-Origin", "*")
+			      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
 	  }
 	  
 	  //LOGIN
@@ -108,7 +112,9 @@ public class UserAPI {
 			  {
 				  String token = userAuth.storeTokens(user);
 				  String jsonToken = "{\"token\":\"" + token +"\"}";
-				  return Response.status(201).entity(jsonToken).build();			  
+				  return Response.status(201).entity(jsonToken).header("Access-Control-Allow-Origin", "*")
+					      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+					      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();			  
 			  }
 			  
 		  }
@@ -120,7 +126,9 @@ public class UserAPI {
 		  
 		  System.out.println("Output hi: "+output);
 		  //Depends on what the back end returns  
-		  return Response.status(200).entity(output).build();
+		  return Response.status(200).header("Access-Control-Allow-Origin", "*")
+			      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
 	  }
 	  
 	  

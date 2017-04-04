@@ -10,13 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by andy on 3/18/17.
@@ -31,7 +31,7 @@ public class Register extends AppCompatActivity {
     private Button submitButton;
     private TextView loginPageLink;
     private enum RequestStatus {
-        SUCCESS, ERROR_MISSING_FIELD, ERROR_SERVER_CONNECTION
+        SUCCESS, ERROR_MISSING_FIELD, ERROR_SERVER_CONNECTION, ERROR_MISC
     }
 
     @Override
@@ -66,6 +66,8 @@ public class Register extends AppCompatActivity {
         startActivity(i);
     }
     private class RegisterRequest extends AsyncTask<String, Void, RequestStatus> {
+        private String errorDetail = null;
+
         @Override
         protected void onPreExecute() {
             // Runs on UI thread
@@ -86,39 +88,62 @@ public class Register extends AppCompatActivity {
                     + params[0] + ", password " + params[1] + ", email " + params[2]);
 
             try {
-                // set up request
-                String data = URLEncoder.encode("username", "UTF-8")
-                        + "=" + URLEncoder.encode(params[0], "UTF-8");
-                data += "&" + URLEncoder.encode("password", "UTF-8") + "="
-                        + URLEncoder.encode(params[1], "UTF-8");
-                data += "&" + URLEncoder.encode("email", "UTF-8")
-                        + "=" + URLEncoder.encode(params[2], "UTF-8");
+                String urlParameters = new JSONObject()
+                        .put("username", params[0])
+                        .put("password", params[1])
+                        .put("email", params[2]).toString();
 
-                URL registerEndpointUrl = new URL(REGISTER_ENDPOINT);
-                URLConnection connection = registerEndpointUrl.openConnection();
+                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+                String request = REGISTER_ENDPOINT;
+                URL url;
+                url = new URL(request);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setInstanceFollowRedirects(false);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("charset", "utf-8");
+                conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                conn.setUseCaches(false);
+                try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
+                    wr.write(postData);
+                }
 
-                // TODO uncomment this when the server endpoint is finalized
-                // make request
-                // connection.setDoOutput(true);
-                // OutputStreamWriter writer  = new OutputStreamWriter(connection.getOutputStream());
-                // writer.write(data);
-                // writer.flush();
+                if (!(conn.getResponseCode()/100  == 2)) { // 2xx code means success
+                    InputStream _is = conn.getErrorStream();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(_is));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while((line = reader.readLine()) != null) {
+                        response.append(line + "\n");
+                    }
+                    Log.d(LOG_TAG, "Non 2XX response\n" + response);
+                    return RequestStatus.ERROR_SERVER_CONNECTION;
+                }
+
 
                 // parse response
                 BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
+                        new InputStreamReader(conn.getInputStream()));
                 StringBuilder response = new StringBuilder();
                 String line;
                 while((line = reader.readLine()) != null) {
-                    response.append(line + "\n");
+                    response.append(line);
                 }
+                Log.d(LOG_TAG, "Server responded with " + response);
+                JSONObject jsonObj = new JSONObject(response.toString());
+                if(!jsonObj.has("token")) {
+                    errorDetail = jsonObj.get("descrip").toString();
+                    return RequestStatus.ERROR_MISC;
+                }
+                //Handle response
 
-                // TODO make use of response
-                Log.d(LOG_TAG, "Server responded with " + response.toString());
-
-            } catch (IOException e) {
+            }catch(Exception e){
                 e.printStackTrace();
-                return RequestStatus.ERROR_SERVER_CONNECTION;
+                errorDetail = "Internal Error";
+                return RequestStatus.ERROR_MISC;
             }
             return RequestStatus.SUCCESS;
         }
@@ -130,6 +155,8 @@ public class Register extends AppCompatActivity {
                 case SUCCESS:
                     Toast.makeText(getApplicationContext(), SystemMessages.REGISTRATION_SUCCESS,
                             Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(),UserHome.class);
+                    startActivity(i);
                     break;
                 case ERROR_MISSING_FIELD:
                     Toast.makeText(getApplicationContext(), SystemMessages.FORM_ERROR ,
@@ -138,6 +165,9 @@ public class Register extends AppCompatActivity {
                 case ERROR_SERVER_CONNECTION:
                     Toast.makeText(getApplicationContext(), SystemMessages.SERVER_ERROR,
                             Toast.LENGTH_SHORT).show();
+                    break;
+                case ERROR_MISC:
+                    Toast.makeText(getApplicationContext(), errorDetail, Toast.LENGTH_LONG).show();
                     break;
             }
         }

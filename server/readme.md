@@ -3,7 +3,7 @@ Implemented as a Maven Java project using Jersey RESTful Web Services framework.
 
 ## APIs:
 - User Registration (POST):
-  * URL: http://localhost:8080/server/users/register
+  * URL: http://35.187.194.28:8080/server/users/register
   * Input JSON: 
   ~~~~ 
   {
@@ -34,7 +34,7 @@ Implemented as a Maven Java project using Jersey RESTful Web Services framework.
   ~~~~
 
 - User Login (POST): 
-  * URL: http://localhost:8080/server/users/login
+  * URL: http://35.187.194.28:8080/server/users/login
   * Input JSON:
   ~~~~
   {
