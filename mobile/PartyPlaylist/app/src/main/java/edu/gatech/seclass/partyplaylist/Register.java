@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,13 +12,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
+import static edu.gatech.seclass.partyplaylist.Api.LOGIN_ENDPOINT;
 
 /**
  * Created by andy on 3/18/17.
@@ -87,23 +98,39 @@ public class Register extends AppCompatActivity {
                     + params[0] + ", password " + params[1] + ", email " + params[2]);
 
             try {
-                // set up request
-                String data = URLEncoder.encode("username", "UTF-8")
-                        + "=" + URLEncoder.encode(params[0], "UTF-8");
-                data += "&" + URLEncoder.encode("password", "UTF-8") + "="
-                        + URLEncoder.encode(params[1], "UTF-8");
-                data += "&" + URLEncoder.encode("email", "UTF-8")
-                        + "=" + URLEncoder.encode(params[2], "UTF-8");
+                String data = new JSONObject()
+                        .put("username", params[0])
+                        .put("password", params[1])
+                        .put("email", params[2]).toString();
 
-                URL registerEndpointUrl = new URL(REGISTER_ENDPOINT);
-                URLConnection connection = registerEndpointUrl.openConnection();
+                URL registerEndpointUrl = new URL(LOGIN_ENDPOINT);
+                HttpURLConnection connection = (HttpURLConnection) registerEndpointUrl.openConnection();
 
                 // TODO uncomment this when the server endpoint is finalized
-                 //make request
-                 connection.setDoOutput(true);
-                 OutputStreamWriter writer  = new OutputStreamWriter(connection.getOutputStream());
-                 writer.write(data);
-                 writer.flush();
+                //make request
+                connection.setDoOutput(true);
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 4.01; Windows NT)");
+                connection.setChunkedStreamingMode(0);
+
+                OutputStreamWriter writer  = new OutputStreamWriter(connection.getOutputStream());
+                writer.write(data);
+                writer.flush();
+
+                if (!(connection.getResponseCode()  == 200)) { // 2xx code means success
+                    InputStream _is = connection.getErrorStream();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(_is));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while((line = reader.readLine()) != null) {
+                        response.append(line + "\n");
+                    }
+                    Log.i("Error != 2xx", response.toString());
+                    return RequestStatus.ERROR_SERVER_CONNECTION;
+                }
+
 
                 // parse response
                 BufferedReader reader = new BufferedReader(
@@ -111,13 +138,21 @@ public class Register extends AppCompatActivity {
                 StringBuilder response = new StringBuilder();
                 String line;
                 while((line = reader.readLine()) != null) {
-                    response.append(line + "\n");
+                    response.append(line);
                 }
 
-                // TODO make use of response
-                Log.d(LOG_TAG, "Server responded with " + response.toString());
+
+                JSONObject jObject  = new JSONObject(response.toString()); // json
+                JSONObject jsonData = jObject.getJSONObject("data"); // get data object
+                Log.d(LOG_TAG, "Server responded with " + jsonData.toString());
+                //handle response
+
 
             } catch (IOException e) {
+                e.printStackTrace();
+                return RequestStatus.ERROR_SERVER_CONNECTION;
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
                 return RequestStatus.ERROR_SERVER_CONNECTION;
             }
