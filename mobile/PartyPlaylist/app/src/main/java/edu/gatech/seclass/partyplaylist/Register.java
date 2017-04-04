@@ -31,7 +31,7 @@ public class Register extends AppCompatActivity {
     private Button submitButton;
     private TextView loginPageLink;
     private enum RequestStatus {
-        SUCCESS, ERROR_MISSING_FIELD, ERROR_SERVER_CONNECTION
+        SUCCESS, ERROR_MISSING_FIELD, ERROR_SERVER_CONNECTION, ERROR_MISC
     }
 
     @Override
@@ -66,6 +66,8 @@ public class Register extends AppCompatActivity {
         startActivity(i);
     }
     private class RegisterRequest extends AsyncTask<String, Void, RequestStatus> {
+        private String errorDetail = null;
+
         @Override
         protected void onPreExecute() {
             // Runs on UI thread
@@ -131,10 +133,17 @@ public class Register extends AppCompatActivity {
                     response.append(line);
                 }
                 Log.d(LOG_TAG, "Server responded with " + response);
+                JSONObject jsonObj = new JSONObject(response.toString());
+                if(!jsonObj.has("token")) {
+                    errorDetail = jsonObj.get("descrip").toString();
+                    return RequestStatus.ERROR_MISC;
+                }
                 //Handle response
 
             }catch(Exception e){
                 e.printStackTrace();
+                errorDetail = "Internal Error";
+                return RequestStatus.ERROR_MISC;
             }
             return RequestStatus.SUCCESS;
         }
@@ -156,6 +165,9 @@ public class Register extends AppCompatActivity {
                 case ERROR_SERVER_CONNECTION:
                     Toast.makeText(getApplicationContext(), SystemMessages.SERVER_ERROR,
                             Toast.LENGTH_SHORT).show();
+                    break;
+                case ERROR_MISC:
+                    Toast.makeText(getApplicationContext(), errorDetail, Toast.LENGTH_LONG).show();
                     break;
             }
         }
