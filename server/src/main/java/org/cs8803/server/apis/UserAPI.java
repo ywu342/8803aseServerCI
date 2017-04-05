@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -18,7 +19,6 @@ import org.cs8803.server.services.HttpURLConnectionExample;
 import org.cs8803.server.services.UserAuth;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -51,7 +51,20 @@ public class UserAPI {
 		  return u;
 	  }
 	  
+//	  @Path("/register")
+//	  @POST
+//	  @OPTIONS
+//	  @Consumes(MediaType.APPLICATION_JSON)
+//	  @Produces(MediaType.APPLICATION_JSON)
+//	  public Response addUser(User user){
+//
+//		  return Response.status(200).entity(output).header("Access-Control-Allow-Origin", "*")
+//			      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+//			      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
+//	  }
+	  
 	  // FOR REGISTRATION
+
 	  @Path("/register")
 	  @POST
 	  @Consumes(MediaType.APPLICATION_JSON)
@@ -76,7 +89,7 @@ public class UserAPI {
 //				  JsonElement jsonElement = stringToJsonElement(token);
 				  
 				  //jsonObject.add("token", token);
-				  String jsonToken = "{\"token\":\"" + token +"\"}";
+				  String jsonToken = "{\"code\":\"200\",\"token\":\"" + token +"\"}";
 				  return Response.status(201).entity(jsonToken).header("Access-Control-Allow-Origin", "*")
 					      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 					      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
@@ -111,7 +124,8 @@ public class UserAPI {
 			  if(jsonObject.get("code").getAsInt()==200)
 			  {
 				  String token = userAuth.storeTokens(user);
-				  String jsonToken = "{\"token\":\"" + token +"\"}";
+				  //String jsonToken = "{\"token\":\"" + token +"\"}";
+				  String jsonToken = "{\"code\":\"200\",\"token\":\"" + token +"\"}";
 				  return Response.status(201).entity(jsonToken).header("Access-Control-Allow-Origin", "*")
 					      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 					      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();			  
@@ -126,7 +140,7 @@ public class UserAPI {
 		  
 		  System.out.println("Output hi: "+output);
 		  //Depends on what the back end returns  
-		  return Response.status(200).header("Access-Control-Allow-Origin", "*")
+		  return Response.status(200).entity(output).header("Access-Control-Allow-Origin", "*")
 			      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 			      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
 	  }
@@ -164,5 +178,22 @@ public class UserAPI {
 			return u;
 		}
 		
+		@OPTIONS
+		@Path("/reg")
+		  public Response getUserOptions() {
+		    return Response.ok()
+		      .header("Access-Control-Allow-Origin", "*")
+		      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+		      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
+		  }
+		
+//		@OPTIONS
+//		  public Response getOptions() {
+//		    return Response.ok()
+//		      .header("Access-Control-Allow-Origin", "*")
+//		      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+//		      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
+//		  }
+	
 		
 }
