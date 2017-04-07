@@ -9,6 +9,8 @@ public class Playlist {
 	String playlistOwnerId;	
 	ArrayList<Song> songlist;
 	
+	public Playlist() {}
+	
 	public String getPlaylistId() {
 		return playlistId;
 	}

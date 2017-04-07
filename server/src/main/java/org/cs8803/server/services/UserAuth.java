@@ -22,7 +22,7 @@ public class UserAuth {
 	
 	public String storeTokens(User user) {
 		String token = encodeString(user);
-		activeUsers.put(user.getId(), token);
+		activeUsers.put(user.getEmail(), token);
 		return token;
 	}
 	

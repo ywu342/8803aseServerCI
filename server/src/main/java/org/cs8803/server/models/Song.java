@@ -7,7 +7,8 @@ public class Song {
 	String artist;
 	String genre;
 	String url;
-
+	
+	public Song() {}
 	
 	public String getId() {
 		return id;

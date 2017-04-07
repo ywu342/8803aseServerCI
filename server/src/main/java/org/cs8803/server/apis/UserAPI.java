@@ -72,7 +72,7 @@ public class UserAPI {
 	  public Response addUser(User user){
 
 		  Gson gson = new Gson();
-		  String userstring = gson.toJson(user);  		  
+		  String userstring = gson.toJson(user);  	
 		  String output="";
 		  try{
 			  
@@ -89,7 +89,7 @@ public class UserAPI {
 //				  JsonElement jsonElement = stringToJsonElement(token);
 				  
 				  //jsonObject.add("token", token);
-				  String jsonToken = "{\"code\":\"200\",\"token\":\"" + token +"\"}";
+				  String jsonToken = "{\"code\":\"201\",\"token\":\"" + token +"\"}";
 				  return Response.status(201).entity(jsonToken).header("Access-Control-Allow-Origin", "*")
 					      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 					      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
@@ -101,8 +101,8 @@ public class UserAPI {
 			  System.out.println(e);
 		  }
 		  
-		  //Depends on what the backend returns
-		  return Response.status(200).entity(output).header("Access-Control-Allow-Origin", "*")
+		  // if the created user already there
+		  return Response.status(400).entity(output).header("Access-Control-Allow-Origin", "*")
 			      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 			      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
 	  }
@@ -126,7 +126,7 @@ public class UserAPI {
 				  String token = userAuth.storeTokens(user);
 				  //String jsonToken = "{\"token\":\"" + token +"\"}";
 				  String jsonToken = "{\"code\":\"200\",\"token\":\"" + token +"\"}";
-				  return Response.status(201).entity(jsonToken).header("Access-Control-Allow-Origin", "*")
+				  return Response.status(200).entity(jsonToken).header("Access-Control-Allow-Origin", "*")
 					      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 					      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();			  
 			  }
@@ -139,8 +139,8 @@ public class UserAPI {
 		  
 		  
 		  System.out.println("Output hi: "+output);
-		  //Depends on what the back end returns  
-		  return Response.status(200).entity(output).header("Access-Control-Allow-Origin", "*")
+		  // if user not found
+		  return Response.status(404).entity(output).header("Access-Control-Allow-Origin", "*")
 			      .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 			      .header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
 	  }
