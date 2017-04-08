@@ -40,7 +40,11 @@ public class Song {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	
-
+	public String toJsonString(){
+		return "{\"id\":\""+this.getId()+"\","
+				+"\"title\":\""+this.getTitle()+"\","
+				+"\"artist\":\""+this.getArtist()+"\","
+				+"\"genre\":\""+this.getGenre()+"\","
+				+"\"url\":\""+this.getUrl()+"\"}";
+	}
 }
