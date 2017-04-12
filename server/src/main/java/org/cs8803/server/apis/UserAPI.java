@@ -77,7 +77,7 @@ public class UserAPI {
 		  try{
 			  
 			  output = httpob.sendPost("https://1-dot-thinking-return-161419.appspot.com/userregistration", userstring);
-
+			  //output = httpob.sendPost("http://35.187.194.28:8080/server/users/register", userstring);
 			  JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
 			  //System.out.println("output 2: "+jsonObject.toString());
 			  System.out.println("code "+jsonObject.get("code"));

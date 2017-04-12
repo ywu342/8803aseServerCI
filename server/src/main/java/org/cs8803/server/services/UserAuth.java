@@ -15,7 +15,7 @@ public class UserAuth {
 	//Get a list of play lists associated with the owner
 	//Update user
 	private String encodeString(User user) {
-		String toEncode = user.getId()+user.getPassword();
+		String toEncode = user.getEmail()+user.getPassword();
 		byte[] encodedBytes = Base64.getEncoder().encode(toEncode.getBytes());
 		return new String(encodedBytes);
 	}
