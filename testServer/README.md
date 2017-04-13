@@ -2,7 +2,7 @@
 1. Import the project as maven project
 2. Maven build the project and then run the TestServer.java as Junit.
 
-## Unit tests listed below
+## Unit tests listed below: All tests are based on calling http requests to the server REST API
 * testLoginFUserFPass() : log in with wrong email, wrong password
 * testLoginFUserTPass() : log in with wrong email, right password
 * testLoginInvalidEmail() : log in with invalid email, right password
