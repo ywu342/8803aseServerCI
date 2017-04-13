@@ -1,4 +1,4 @@
-package testServer;
+package org.cs8803.testServer;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
