@@ -3,12 +3,9 @@ package testServer;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
 
-import javax.net.ssl.HttpsURLConnection;
 
 public class HttpURLConnectionTest {
 
@@ -104,28 +101,30 @@ public class HttpURLConnectionTest {
 //		os.flush();
 
 		int responseCode = con.getResponseCode();
-		
-
-			
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
 	
+
+		if (responseCode == 200 || responseCode == 201) {	
+			/*System.out.println("\nSending 'POST' request to URL : " + url);
+			System.out.println("Post parameters : " + urlParameters);
+			System.out.println("Response Code : " + responseCode);*/
+
 			BufferedReader in = new BufferedReader(
 			        new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
-	
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
 			in.close();
-	
 			//print result
-			System.out.println("response "+response.toString());
+			//System.out.println("response "+response.toString());
 			
 			return response.toString();
+		}
+		else {
+			  return "Authentication Failed";
 
+		}
 
 	}
 
