@@ -1,6 +1,6 @@
 ## Tests written with Junit
-1. Import the project
-2. To run the tests, make sure Junit4 libraries and a gson library are added into your build path. And then run the TestServer.java as Junit.
+1. Import the project as maven project
+2. Maven build the project and then run the TestServer.java as Junit.
 
 ## Unit tests listed below
 * testLoginFUserFPass() : log in with wrong email, wrong password
