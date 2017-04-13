@@ -26,9 +26,9 @@ public class UserAuth {
 		return token;
 	}
 	
-	public boolean verifyToken(String userid, String token){
-		if(!activeUsers.containsKey(userid)) return false;
-		String correctToken = activeUsers.get(userid);
+	public boolean verifyToken(String email, String token){
+		if(!activeUsers.containsKey(email)) return false;
+		String correctToken = activeUsers.get(email);
 		return correctToken.equals(token);
 	}
 	

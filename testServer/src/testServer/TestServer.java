@@ -5,54 +5,98 @@ import static org.junit.Assert.*;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
-import org.junit.Test;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import org.junit.Test;
+import com.google.gson.*;
+
 
 public class TestServer {
 	
 	HttpURLConnectionTest http = new HttpURLConnectionTest();
-	String randomEmail;
-	String randomUser;
+	String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+	
+	
+	
 
-	@Test
-	public void testRegisterValidUser() throws Exception{
-		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-		randomEmail = timeStamp+"@gatech.edu";
-		randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \"true\"}";
+/*	@Test
+	public void testRegisterResponseCodeValidUser() throws Exception{
+		String randomEmail = timeStamp+"@gatech.edu";
+		String randomPass = "true";
+		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
 		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
-		Gson gson = new Gson();
-		String userstring = gson.toJson(user);  
 		JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
-		fail("Not yet implemented");
+		//System.out.println("valid email : " + output);
+		assertEquals(jsonObject.get("code").toString(), "\"201\"");
 	}
+
+	
 	
 	@Test
-	public void testRegisterValidToken() throws Exception{
-		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-		String randomEmailtmp = timeStamp+"gmail.com";
+	public void testRegisterTokenValidUser() throws Exception{
+		String randomEmailtmp = timeStamp+"@gmail.com";
 		String randomUsertmp = "{\"name\": \"yaling\",\"email\": \""+randomEmailtmp+"\",\"password\": \"true\"}";
-		http.sendPost("http://35.187.194.28:8080/server/users/register", randomUsertmp);
+		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUsertmp);
+		System.out.println("initial register:" + output);
 		String toEncode = randomEmailtmp+"true";
 		byte[] encodedBytes = Base64.getEncoder().encode(toEncode.getBytes());
-		
-		fail("Not yet implemented");
+		JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();		
+		//System.out.println("ok ok " + jsonObject.get("token") + " second:" + new String(encodedBytes) );
+		assertEquals(jsonObject.get("token").toString(), "\""+ new String(encodedBytes) + "\"");	
+	
 	}
 	
 	@Test
-	public void testLoginValidToken() throws Exception{
-		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+	public void testLoginResponseCodeValidUser() throws Exception{
+		//Register the user
 		String randomEmail = timeStamp+"@gatech.edu";
-		String urlParams = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \"true\"}";
-		http.sendPost("http://35.187.194.28:8080/server/users/register", urlParams);
-		fail("Not yet implemented");
+		String randomPass = "true";
+		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
+		http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		
+		
+		//login the same user
+		String urlParams = "{\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
+		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", urlParams);
+		JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
+
+		assertEquals(jsonObject.get("code").toString(), "\"200\"");		
 	}
+
 	
 	@Test
-	public void testRegisterDupEmail() throws Exception{
-		fail("Not yet implemented");
+	public void testLoginTokenValidUser() throws Exception{
+		//Register the user
+		String randomEmail = timeStamp+"@gatech.edu";
+		String randomPass = "true";
+		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
+		http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		
+		//Login the same user
+		String urlParams = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
+		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", urlParams);
+		JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
+
+		String toEncode = randomEmail+randomPass;
+		byte[] encodedBytes = Base64.getEncoder().encode(toEncode.getBytes());
+		
+		assertEquals(jsonObject.get("token").toString(), "\""+ new String(encodedBytes) + "\"");		
+	}*/
+	
+	
+	@Test
+	public void testRegisterDuplicateEmail() throws Exception{
+
+		
+		
+		//String randomUser = "{\"name\": \"yaling\",\"email\": \""+	+"\",\"password\": \""+randomPass+"\"}";
+		String randomUser = "{\"name\": \"Ricket34\",\"email\": \"anuanu79wwee3493@gmail.com\",\"password\": \""+"trueue"+"\"}";
+		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		System.out.println("dupemail : " + output);
+		//JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
+
+		
+		//assertEquals(jsonObject.get("code").toString(), "\"201\"");
+
 	}
 	
 	@Test

@@ -52,8 +52,7 @@ public class HttpURLConnectionTest {
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
 		
-		if(responseCode==200||responseCode==201)
-		{
+
 
 			BufferedReader in = new BufferedReader(
 			        new InputStreamReader(con.getInputStream()));
@@ -68,11 +67,7 @@ public class HttpURLConnectionTest {
 			//print result
 			System.out.println(response.toString());
 			return response.toString();
-		}
-		else
-		{
-			return "False";
-		}
+
 
 	}
 
@@ -110,8 +105,7 @@ public class HttpURLConnectionTest {
 
 		int responseCode = con.getResponseCode();
 		
-		if(responseCode==200||responseCode==201)
-		{
+
 			
 			System.out.println("\nSending 'POST' request to URL : " + url);
 			System.out.println("Post parameters : " + urlParameters);
@@ -128,14 +122,10 @@ public class HttpURLConnectionTest {
 			in.close();
 	
 			//print result
-			System.out.println(response.toString());
+			System.out.println("response "+response.toString());
 			
 			return response.toString();
-		}
-		else
-		{
-			return "False";
-		}
+
 
 	}
 

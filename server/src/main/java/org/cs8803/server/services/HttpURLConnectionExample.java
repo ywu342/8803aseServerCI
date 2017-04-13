@@ -108,8 +108,7 @@ public class HttpURLConnectionExample {
 
 		int responseCode = con.getResponseCode();
 		
-		if(responseCode==200||responseCode==201)
-		{
+
 			
 			System.out.println("\nSending 'POST' request to URL : " + url);
 			System.out.println("Post parameters : " + urlParameters);
@@ -126,14 +125,10 @@ public class HttpURLConnectionExample {
 			in.close();
 	
 			//print result
-			System.out.println(response.toString());
+			System.out.println("RESP"+response.toString());
 			
 			return response.toString();
-		}
-		else
-		{
-			return "False";
-		}
+
 
 	}
 
