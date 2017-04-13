@@ -57,8 +57,7 @@ Implemented as a Maven Java project using Jersey RESTful Web Services framework.
      "descrip": "User not found"
   }
   ~~~~
-
-
+~~~~
 ## Tests written with Junit
 1. Import the project as maven project
 2. Maven build the project and then run the TestServer.java as Junit.
