@@ -1,5 +1,5 @@
 /** Defining the endpoint **/
-var endpoint = "http://143.215.113.196:8080/server/";
+var endpoint = "http://35.187.194.28:8080/server/";
 
 /** Utility function to send data **/
 function post(route, data, $http, callback) {
@@ -61,7 +61,7 @@ var app = angular.module('PartyList', [])
             else {
                 params = { name: "", email: email, password: pwd };
                 post('users/login', params, $http, function(data) {
-                    if (data.success)
+                    if (data.code == 200)
                         window.location.replace('./dashboard');
                     else
                         alert('Login unsuccessful, please enter valid credentials!');
@@ -82,7 +82,7 @@ var app = angular.module('PartyList', [])
             else {
                 params = { name: name, password: pwd, emai: uemail };
                 post('users/register', params, $http, function(data) {
-                    if (data.success)
+                    if (data.code == 200)
                         window.location.replace('./dashboard');
                     else
                         alert('Registration unsuccessful, please enter valid credentials!');

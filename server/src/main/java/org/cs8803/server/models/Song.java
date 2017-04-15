@@ -7,7 +7,8 @@ public class Song {
 	String artist;
 	String genre;
 	String url;
-
+	
+	public Song() {}
 	
 	public String getId() {
 		return id;
@@ -39,7 +40,11 @@ public class Song {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	
-
+	public String toJsonString(){
+		return "{\"id\":\""+this.getId()+"\","
+				+"\"title\":\""+this.getTitle()+"\","
+				+"\"artist\":\""+this.getArtist()+"\","
+				+"\"genre\":\""+this.getGenre()+"\","
+				+"\"url\":\""+this.getUrl()+"\"}";
+	}
 }

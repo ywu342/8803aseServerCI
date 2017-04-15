@@ -15,20 +15,20 @@ public class UserAuth {
 	//Get a list of play lists associated with the owner
 	//Update user
 	private String encodeString(User user) {
-		String toEncode = user.getId()+user.getPassword();
+		String toEncode = user.getEmail()+user.getPassword();
 		byte[] encodedBytes = Base64.getEncoder().encode(toEncode.getBytes());
 		return new String(encodedBytes);
 	}
 	
 	public String storeTokens(User user) {
 		String token = encodeString(user);
-		activeUsers.put(user.getId(), token);
+		activeUsers.put(user.getEmail(), token);
 		return token;
 	}
 	
-	public boolean verifyToken(String userid, String token){
-		if(!activeUsers.containsKey(userid)) return false;
-		String correctToken = activeUsers.get(userid);
+	public boolean verifyToken(String email, String token){
+		if(!activeUsers.containsKey(email)) return false;
+		String correctToken = activeUsers.get(email);
 		return correctToken.equals(token);
 	}
 	

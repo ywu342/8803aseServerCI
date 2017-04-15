@@ -9,6 +9,8 @@ public class Playlist {
 	String playlistOwnerId;	
 	ArrayList<Song> songlist;
 	
+	public Playlist() {}
+	
 	public String getPlaylistId() {
 		return playlistId;
 	}
@@ -33,5 +35,10 @@ public class Playlist {
 	public void setSonglist(ArrayList<Song> songlist) {
 		this.songlist = songlist;
 	}
-	
+//	public String toJsonString(){
+//		return "{\"playlistId\":\""+this.getPlaylistId()+"\","
+//				+"\"playlistName\":\""+this.getPlaylistName()+"\","
+//				+"\"playlistOwnerId\":\""+this.getPlaylistOwnerId()+"\","
+//				+"\"songlist\":"+this.getSonglist().+"}";
+//	}
 }

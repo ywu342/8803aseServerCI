@@ -1,29 +1,28 @@
-package org.cs8803.server.services;
+package org.cs8803.testServer;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.net.ssl.HttpsURLConnection;
 
-public class HttpURLConnectionExample {
+public class HttpURLConnectionTest {
 
 	private final String USER_AGENT = "Mozilla/5.0";
 
-//	public static void main(String[] args) throws Exception {
-//
-//		HttpURLConnectionExample http = new HttpURLConnectionExample();
-//
-//		System.out.println("Testing 1 - Send Http GET request");
-//		http.sendGet();
-//
-//		System.out.println("\nTesting 2 - Send Http POST request");
-//	//	http.sendPost();
-//
-//	}
+	public static void main(String[] args) throws Exception {
+
+		HttpURLConnectionTest http = new HttpURLConnectionTest();
+
+		System.out.println("Testing 1 - Send Http GET request");
+		http.sendGet("http://35.187.194.28:8080/server/users");
+
+		System.out.println("\nTesting 2 - Send Http POST request");
+		String urlParams = "{\"name\": \"yaling\",\"email\": \"abctgygy@gmail.com\",\"password\": \"true\"}";
+		http.sendPost("http://35.187.194.28:8080/server/users/register", urlParams);
+
+	}
 
 	// HTTP GET request
 	public String sendGet(String url) throws Exception {
@@ -50,8 +49,7 @@ public class HttpURLConnectionExample {
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
 		
-		if(responseCode==200||responseCode==201)
-		{
+
 
 			BufferedReader in = new BufferedReader(
 			        new InputStreamReader(con.getInputStream()));
@@ -66,11 +64,7 @@ public class HttpURLConnectionExample {
 			//print result
 			System.out.println(response.toString());
 			return response.toString();
-		}
-		else
-		{
-			return "False";
-		}
+
 
 	}
 
@@ -81,7 +75,7 @@ public class HttpURLConnectionExample {
 		//String url ="https://1-dot-thinking-return-161419.appspot.com/userregistration";
 		//String url ="https://localhost:8080/server/users/register";
 		URL obj = new URL(url);
-		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		//add reuqest header
 		con.setRequestMethod("POST");
@@ -107,28 +101,30 @@ public class HttpURLConnectionExample {
 //		os.flush();
 
 		int responseCode = con.getResponseCode();
-		
-
-			
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
 	
+
+		if (responseCode == 200 || responseCode == 201) {	
+			/*System.out.println("\nSending 'POST' request to URL : " + url);
+			System.out.println("Post parameters : " + urlParameters);
+			System.out.println("Response Code : " + responseCode);*/
+
 			BufferedReader in = new BufferedReader(
 			        new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
-	
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
 			in.close();
-	
 			//print result
-			System.out.println("RESP"+response.toString());
+			//System.out.println("response "+response.toString());
 			
 			return response.toString();
+		}
+		else {
+			  return "Authentication Failed";
 
+		}
 
 	}
 
