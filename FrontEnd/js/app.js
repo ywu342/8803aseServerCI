@@ -12,7 +12,7 @@ function post(route, data, $http, callback) {
             callback(data);
         })
         .error(function(data, status, header, config) {
-            console.log("Error:" + data);
+            callback(data);
         });
 }
 
@@ -27,7 +27,7 @@ function get(route, params, $http, callback) {
             callback(data);
         })
         .error(function(data, status, header, config) {
-            console.log("Error:" + data);
+            callback(data);
         });
 }
 
@@ -59,10 +59,11 @@ var app = angular.module('PartyList', [])
             if (!checkEmail(email) || !checkEmpty(pwd))
                 alert('Incorrect login information.');
             else {
-                params = { name: "", email: email, password: pwd };
+                params = {email: email, password: pwd };
                 post('users/login', params, $http, function(data) {
+                    console.log(data);
                     if (data.code == 200)
-                        window.location.replace('./dashboard');
+                        alert('Login successful!');
                     else
                         alert('Login unsuccessful, please enter valid credentials!');
                 });
@@ -82,8 +83,9 @@ var app = angular.module('PartyList', [])
             else {
                 params = { name: name, password: pwd, emai: uemail };
                 post('users/register', params, $http, function(data) {
+                    console.log(data);
                     if (data.code == 200)
-                        window.location.replace('./dashboard');
+                       alert('Registration successful!');
                     else
                         alert('Registration unsuccessful, please enter valid credentials!');
                 });
