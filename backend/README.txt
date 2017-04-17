@@ -78,5 +78,106 @@ Response:
 }
 
 
+Test Cases:
+
+User Registration: 
+URL: http://1-dot-thinking-return-161419.appspot.com/userregistration
+Test Case 1: Happy POST
+
+Request JSON: 
+{"name": "Kellie",
+"email": "kell@gmail.com",
+"password": "Kell"
+}
+
+Response JSON:
+{
+  "code": 200,
+  "descrip": "User Created Successfully",
+  "smallUser": {
+    "key": {
+      "kind": "User",
+      "id": 5655869022797824
+    },
+    "name": "Kellie",
+    "email": "kell@gmail.com",
+    "password": "Kell"
+  }
+}
+
+Test case 2: User with duplicate email
+
+Request JSON:
+{"name": "Kellie",
+"email": "kell@gmail.com",
+"password": "Kell"
+}
+
+Response JSON:
+{
+  "code": 400,
+  "descrip": "User could not be created Successfully.User with email id already exists",
+  "smallUser": {
+    "name": "Kellie",
+    "email": "kell@gmail.com",
+    "password": "Kell"
+  }
+}
+
+Test case 3: User with no name:
+
+Request JSON:
+{"name": "",
+"email": "kell1@gmail.com",
+"password": "Kol"
+}
+
+Response JSON:
+{
+  "code": 401,
+  "descrip": "User could not be created Successfully. Name is null.",
+  "smallUser": {
+    "name": "",
+    "email": "kell1@gmail.com",
+    "password": "Kol"
+  }
+}
+
+Test case 4: User with no password:
+
+Request JSON:
+{"name": "huhu",
+"email": "kell123@gmail.com",
+"password": ""
+}
+
+Response JSON:
+{
+  "code": 402,
+  "descrip": "User could not be created Successfully. Password is null.",
+  "smallUser": {
+    "name": "huhu",
+    "email": "kell123@gmail.com",
+    "password": ""
+  }
+}
+
+Test case 5: User with no email:
+
+Request JSON:
+{"name": "huhu",
+"email": "",
+"password": "eeeee"
+}
 
 
+Response JSON:
+{
+  "code": 403,
+  "descrip": "User could not be created Successfully. Email is null.",
+  "smallUser": {
+    "name": "huhu",
+    "email": "",
+    "password": "eeeee"
+  }
+}
