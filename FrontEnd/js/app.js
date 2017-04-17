@@ -81,7 +81,7 @@ var app = angular.module('PartyList', [])
                 !checkPassword(pwd, cpwd))
                 alert('Incorrect user information.');
             else {
-                params = { name: name, password: pwd, emai: uemail };
+                params = { name: name, password: pwd, email: uemail };
                 post('users/register', params, $http, function(data) {
                     console.log(data);
                     if (data.code == 200)
