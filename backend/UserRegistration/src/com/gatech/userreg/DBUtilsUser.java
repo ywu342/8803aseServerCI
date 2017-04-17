@@ -53,6 +53,30 @@ public class DBUtilsUser {
 		}
 	}
 	
+	public static User getUserWithEmail(String email) {
+
+		PersistenceManager pm = null;
+		User usr = null;
+		// Get the current month and year
+		try {
+
+			pm = PMF.get().getPersistenceManager();
+			Query query = null;
+			query = pm.newQuery(User.class, "  email == givenEmail ");
+
+			// declare parameters used above
+			query.declareParameters("String givenEmail");
+
+			List<User> z = (List<User>) query.executeWithArray(email);
+
+			return z.get(0);
+		} catch (Exception ex) {
+			return null;
+		} finally {
+			pm.close();
+		}
+	}
+	
 	public static User getUser(String email, String password) {
 
 		PersistenceManager pm = null;

@@ -20,6 +20,11 @@ public class User {
 	@Persistent
 	private String password;
 	
+	
+
+	public User() {
+		super();
+	}
 
 	public User(String name, String email, String password) {
 		super();

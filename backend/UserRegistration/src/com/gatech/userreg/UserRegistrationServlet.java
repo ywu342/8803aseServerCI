@@ -13,10 +13,12 @@ import javax.servlet.http.*;
 public class UserRegistrationServlet extends HttpServlet {
 	public static final Logger _logger = Logger.getLogger(UserRegistrationServlet.class.getName());
 
+	//Add a GET userID that returns
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		
+		StringBuffer requestURL = req.getRequestURL();
 		String name = "";
 		String strResponse = "";
 		UserError userError = new UserError();
@@ -25,10 +27,10 @@ public class UserRegistrationServlet extends HttpServlet {
 		try {
 			email = req.getParameter("email");
 			password = req.getParameter("password");
-			//name = req.getParameter("name");
+			name = req.getParameter("name");
 			
-			User usr = DBUtilsUser.getUser(email, password);
-			if(usr==null)
+			User usr = DBUtilsUser.getUser(name, email, password);
+			if(usr==null)	
 				throw new Exception();
 			userError.setSmallUser(usr);
 			userError.setCode(200);
@@ -61,6 +63,37 @@ public class UserRegistrationServlet extends HttpServlet {
 		UserError userError = new UserError();
 
 		reader.close();
+		if(usr.getName().isEmpty() || usr.getName()==null){
+			userError.setSmallUser(usr);
+			userError.setCode(401);
+			userError.setDescrip("User could not be created Successfully Name is null.");
+			String json = new Gson().toJson(userError);
+		    resp.setContentType("application/json");
+		    resp.setCharacterEncoding("UTF-8");
+		    resp.getWriter().write(json);
+		}
+		
+		else if(usr.getPassword().isEmpty() || usr.getPassword()==null){
+			userError.setSmallUser(usr);
+			userError.setCode(402);
+			userError.setDescrip("User could not be created Successfully Password is null.");
+			String json = new Gson().toJson(userError);
+		    resp.setContentType("application/json");
+		    resp.setCharacterEncoding("UTF-8");
+		    resp.getWriter().write(json);
+		}
+		
+		else if(usr.getEmail().isEmpty() || usr.getEmail() ==null){
+			userError.setSmallUser(usr);
+			userError.setCode(403);
+			userError.setDescrip("User could not be created Successfully Email is null.");
+			String json = new Gson().toJson(userError);
+		    resp.setContentType("application/json");
+		    resp.setCharacterEncoding("UTF-8");
+		    resp.getWriter().write(json);
+		}
+		
+		else{
 
 		try {
 			User user = DBUtilsUser.getUser(usr.getName(),usr.getEmail(), usr.getPassword());
@@ -86,6 +119,7 @@ public class UserRegistrationServlet extends HttpServlet {
 		    resp.setContentType("application/json");
 		    resp.setCharacterEncoding("UTF-8");
 		    resp.getWriter().write(json);
+		}
 		}
 
 	}
