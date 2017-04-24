@@ -17,14 +17,14 @@ public class TestRunner {
 	      }
 	      
 	      try{
-		      File yourFile = new File("score.txt");
+		      File yourFile = new File("~/score.txt");
 		      yourFile.createNewFile(); // if file already exists will do nothing       
 	      }catch(Exception e)
 	      {
 	    	 
 	      }
 
-	    //result.wasSuccessful();
+	    System.out.println(result.wasSuccessful());
 
 	}
 
