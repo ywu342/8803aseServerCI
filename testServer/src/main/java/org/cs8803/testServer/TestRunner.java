@@ -1,4 +1,6 @@
 package org.cs8803.testServer;
+import java.io.File;
+
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -13,8 +15,16 @@ public class TestRunner {
 	      for (Failure failure : result.getFailures()) {
 	         System.out.println(failure.toString());
 	      }
-			
-	      System.out.println(result.wasSuccessful());
+	      
+	      try{
+		      File yourFile = new File("score.txt");
+		      yourFile.createNewFile(); // if file already exists will do nothing       
+	      }catch(Exception e)
+	      {
+	    	 
+	      }
+
+	    //result.wasSuccessful();
 
 	}
 
