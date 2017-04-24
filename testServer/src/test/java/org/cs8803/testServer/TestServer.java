@@ -16,10 +16,10 @@ public class TestServer {
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		String randomEmailtmp = timeStamp+"@gmail.com";
 		String randomUsertmp = "{\"name\": \"yaling\",\"email\": \""+randomEmailtmp+"\",\"password\": \"true\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUsertmp);
+		String output = http.sendPost("http://localhost:8080/server/users/register", randomUsertmp);
 		
 		
-		output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUsertmp);
+		output = http.sendPost("http://localhost:8080/server/users/register", randomUsertmp);
 		assertEquals(output, "Authentication Failed");
 
 	}
@@ -32,13 +32,13 @@ public class TestServer {
 		String randomEmail = timeStamp+"@gatech.edu";
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		http.sendPost("http://localhost:8080/server/users/register", randomUser);
 	
 		
 		//login the same email but different password
 		randomPass = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		String urlParams = "{\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", urlParams);
+		String output = http.sendPost("http://localhost:8080/server/users/login", urlParams);
 		assertEquals(output, "Authentication Failed");	
 	}
 
@@ -48,14 +48,14 @@ public class TestServer {
 		String randomEmail = timeStamp+"@gatech.edu";
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		http.sendPost("http://localhost:8080/server/users/register", randomUser);
 	
 		
 		//login the different email but different password
 		randomPass = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		randomEmail = timeStamp+"@gatech.com";
 		String urlParams = "{\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", urlParams);
+		String output = http.sendPost("http://localhost:8080/server/users/login", urlParams);
 		assertEquals(output, "Authentication Failed");	
 	}
 
@@ -65,13 +65,13 @@ public class TestServer {
 		String randomEmail = timeStamp+"@gatech.edu";
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		http.sendPost("http://localhost:8080/server/users/register", randomUser);
 	
 		
 		//login the different email but same password
 		randomEmail += "d";
 		String urlParams = "{\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", urlParams);
+		String output = http.sendPost("http://localhost:8080/server/users/login", urlParams);
 		assertEquals(output, "Authentication Failed");		
 	}
 	
@@ -81,7 +81,7 @@ public class TestServer {
 		String randomEmail = timeStamp+"@gatech.edu";
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		String output = http.sendPost("http://localhost:8080/server/users/register", randomUser);
 		assertEquals(output, "Authentication Failed");
 	}
 	
@@ -90,7 +90,7 @@ public class TestServer {
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		String randomEmail = timeStamp+"@gatech.edu";
 		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+""+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);	
+		String output = http.sendPost("http://localhost:8080/server/users/register", randomUser);	
 		assertEquals(output, "Authentication Failed");
 	}
 	
@@ -98,7 +98,7 @@ public class TestServer {
 	public void testRegisterMissEmail() throws Exception{
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"yaling\",\"password\": \""+randomPass+"\",\"email\": \""+""+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		String output = http.sendPost("http://localhost:8080/server/users/register", randomUser);
 		assertEquals(output, "Authentication Failed");
 	}
 	
@@ -106,7 +106,7 @@ public class TestServer {
 	public void testLoginMissEmail() throws Exception{
 		String randomPass = "true";
 		String randomUser = "{\"email\": \""+""+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", randomUser);
+		String output = http.sendPost("http://localhost:8080/server/users/login", randomUser);
 		assertEquals(output, "Authentication Failed");
 	}
 	
@@ -117,11 +117,11 @@ public class TestServer {
 		String randomEmail = timeStamp+"@gatech.edu";
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		http.sendPost("http://localhost:8080/server/users/register", randomUser);
 		
 		// leave password blank
 		randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+""+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", randomUser);
+		String output = http.sendPost("http://localhost:8080/server/users/login", randomUser);
 		assertEquals(output, "Authentication Failed");
 	}
 	
@@ -131,7 +131,7 @@ public class TestServer {
 		String randomEmail = timeStamp;
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		String output = http.sendPost("http://localhost:8080/server/users/register", randomUser);
 		assertEquals(output, "Authentication Failed");
 	}
 	
@@ -141,7 +141,7 @@ public class TestServer {
 		String randomEmail = timeStamp;
 		String randomPass = "true";
 		String randomUser = "{\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", randomUser);
+		String output = http.sendPost("http://localhost:8080/server/users/login", randomUser);
 		assertEquals(output, "Authentication Failed");
 	}
 
@@ -151,7 +151,7 @@ public class TestServer {
 		String randomEmail = timeStamp+"@gatech.edu";
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		String output = http.sendPost("http://localhost:8080/server/users/register", randomUser);
 		JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
 		//System.out.println("valid email : " + output);
 		assertEquals(jsonObject.get("code").toString(), "\"201\"");
@@ -164,7 +164,7 @@ public class TestServer {
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		String randomEmailtmp = timeStamp+"@gmail.com";
 		String randomUsertmp = "{\"name\": \"yaling\",\"email\": \""+randomEmailtmp+"\",\"password\": \"true\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/register", randomUsertmp);
+		String output = http.sendPost("http://localhost:8080/server/users/register", randomUsertmp);
 		//System.out.println("initial register:" + output);
 		String toEncode = randomEmailtmp+"true";
 		byte[] encodedBytes = Base64.getEncoder().encode(toEncode.getBytes());
@@ -181,12 +181,12 @@ public class TestServer {
 		String randomEmail = timeStamp+"@gatech.edu";
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		http.sendPost("http://localhost:8080/server/users/register", randomUser);
 		
 		
 		//login the same user
 		String urlParams = "{\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", urlParams);
+		String output = http.sendPost("http://localhost:8080/server/users/login", urlParams);
 		JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
 
 		assertEquals(jsonObject.get("code").toString(), "\"200\"");		
@@ -200,11 +200,11 @@ public class TestServer {
 		String randomEmail = timeStamp+"@gatech.edu";
 		String randomPass = "true";
 		String randomUser = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		http.sendPost("http://35.187.194.28:8080/server/users/register", randomUser);
+		http.sendPost("http://localhost:8080/server/users/register", randomUser);
 		
 		//Login the same user
 		String urlParams = "{\"name\": \"yaling\",\"email\": \""+randomEmail+"\",\"password\": \""+randomPass+"\"}";
-		String output = http.sendPost("http://35.187.194.28:8080/server/users/login", urlParams);
+		String output = http.sendPost("http://localhost:8080/server/users/login", urlParams);
 		JsonObject jsonObject = (new JsonParser()).parse(output).getAsJsonObject();
 
 		String toEncode = randomEmail+randomPass;
